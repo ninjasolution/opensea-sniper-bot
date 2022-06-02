@@ -29,7 +29,7 @@ if (!MNEMONIC || !NODE_API_KEY || !NETWORK || !opensea_link || !accountAddress) 
 
 if (!startTimeUTC) {
 
-  [hour,minute,second]=[0,0,0]
+  [hour,minute,second]=[ 0, 0, 0]
 
 } else {
 
