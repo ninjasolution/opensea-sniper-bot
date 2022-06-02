@@ -68,8 +68,9 @@ async function main() {
   console.log("Launched");
 
   extragas = (await seaport._computeGasPrice()).toString();
-  extragas *= 2;
   console.log(extragas);
+
+  //set the gas fee as two time
   seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
 
   let order;
