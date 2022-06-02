@@ -13,13 +13,9 @@
   "author": "blockchainexpertbc",
   "homepage": "https://github.com/blockchainexpertbc/opensea-sniper-bot",
   "dependencies": {
-    "@truffle/hdwallet-provider": "^1.4.0",
+    "@truffle/hdwallet-provider": "^2.0.8",
     "bignumber.js": "^9.0.2",
     "nodemon": "^2.0.16",
-    "opensea-js": "^2.0.2"
-  },
-  "engines": {
-    "node": "^12.18.x",
-    "yarn": "~1.22.4"
+    "opensea-js": "^3.0.4"
   }
 }
