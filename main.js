@@ -3,9 +3,10 @@ const helpers = require("./helpers.js");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const BigNumber = require('bignumber.js');
 const opensea = require("opensea-js");
+const OrderSide = require("opensea-js/lib/types").OrderSide;
 const OpenSeaPort = opensea.OpenSeaPort;
 const Network = opensea.Network;
-const OrderSide = require("opensea-js/lib/types").OrderSide;
+
 
 var extragas = 0
 const accountAddress = "0x02fc14d01F4E073829276cc2f4f94Fb4EDe1e0c4"
@@ -57,7 +58,8 @@ const seaport = new OpenSeaPort(
 
 // Environment setup done
 
-seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
+
+
 const [ asset_contract_address, token_id ] = helpers.parse_url(opensea_link) // extract asset contract address and token id from the opensea likn
 
 console.log(asset_contract_address, token_id)
@@ -65,7 +67,11 @@ console.log(asset_contract_address, token_id)
 async function main() {
   console.log("Launched");
 
-  
+  extragas = (await seaport._computeGasPrice()).toString();
+  extragas *= 2;
+  console.log(extragas);
+  seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
+
   let order;
   try {
     order = await seaport.api.getOrder({   // Extracting order to fulfill
@@ -73,9 +79,12 @@ async function main() {
         token_id,
         side: OrderSide.Sell,
     });
+    console.log(order.basePrice)
   }catch (error) {
     console.log(error, "------------------------------")
   }
+
+  
 
   try {
     const transactionHash = await seaport.fulfillOrder({ //Fulfilling order
@@ -98,5 +107,5 @@ currentTime = new Date().getTime()
 timeo = t - Date.now();
 
 
-setTimeout(main, Math.max(timeo,0))
+setTimeout(main, 0)
 
