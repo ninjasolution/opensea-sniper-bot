@@ -18,7 +18,6 @@ const NODE_API_KEY = "a3a311a7d66644ffa18110e797cf65d4"
 const NETWORK = "mainnet"
 // const NETWORK = "live"
 const API_KEY = "f69c0112d1c348d799aee906d7435263" //process.env.API_KEY || ""; // API key is optional but useful if you're doing a high volume of requests.
-const startTimeUTC = "9:21:30";
 
 if (!MNEMONIC || !NODE_API_KEY || !NETWORK || !opensea_link || !accountAddress) {
 
@@ -28,18 +27,7 @@ if (!MNEMONIC || !NODE_API_KEY || !NETWORK || !opensea_link || !accountAddress) 
 
 }
 
-if (!startTimeUTC) {
 
-  [hour,minute,second]=[ 0, 0, 0]
-
-} else {
-
-  hour = parseInt(startTimeUTC.replace(/:.*/, ""))
-  re = /:(\d+):/
-  minute = parseInt((re.exec(startTimeUTC))[1]);
-  second = parseInt(startTimeUTC.replace(/.*:/, ""));
-
-}
 
 const network = NETWORK === "mainnet"/*  || NETWORK === "live" */ ? "mainnet" : "rinkeby";
 console.log(network)
@@ -85,8 +73,6 @@ async function main() {
     console.log(error, "------------------------------")
   }
 
-  
-
   try {
     const transactionHash = await seaport.fulfillOrder({ //Fulfilling order
           order,
@@ -100,13 +86,6 @@ async function main() {
   return;
 
 };
-
-//Setting up a timeout
-const now = new Date()
-const t = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, second, 10).getTime() 
-currentTime = new Date().getTime()
-timeo = t - Date.now();
-
 
 setTimeout(main, 0)
 
