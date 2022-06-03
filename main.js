@@ -41,7 +41,9 @@ const seaport = new OpenSeaPort(
         ? Network.Main
         : Network.Rinkeby,
     apiKey: API_KEY,
-  });
+  },
+  (arg) => console.log(arg)
+  );
 
 // Environment setup done
 
