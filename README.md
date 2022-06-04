@@ -24,7 +24,8 @@ You can also run this script by using `npm start`
 - NETWORK : network to use. Only two options ("rinkeby" for testnet, "mainnet" for etherreum mainnet)
 - NODE_API_KEY : your infura api key ( https://ethereumico.io/knowledge-base/infura-api-key-guide/)
 - ACCOUNT_ADDRESS : the ethereum address linked to the mnemonic above
-- OPENSEA_LINK : The link of the opensea asset you want to buy
+- COLLECTION_ADDR : the opensea asset address
+- TOKEN_IDS : the array of assets id
 - PRIVATE_KEYS : The private key array for gas fee to buy asset you want
 
 ### Example
