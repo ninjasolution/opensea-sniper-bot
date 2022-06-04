@@ -45,46 +45,74 @@ const seaport = new OpenSeaPort(
   },
   (arg) => console.log(arg)
   );
+(async() => {
+  extragas = (await seaport._computeGasPrice()).toString();
+})()
+
+//set the gas fee as two times
+seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
 
 // Environment setup done
 
+async function firstTransaction() {
+  let order;
+  try {
+    order = await seaport.api.getOrders({   // Extracting order to fulfill
+      asset_contract_address: asset_contract_addresses[0],
+      token_ids: token_ids[0],
+      side: OrderSide.Sell,
+    });
 
+  }catch (error) {
+    console.log("ERROR(API-GET-ORDERS):", error)
+  }
+
+  try {
+    const transactionHash = await seaport.fulfillOrder({ //Fulfilling order
+          order,
+          accountAddress,
+    });
+
+    console.log(transactionHash);
+  }catch (error) {
+    console.log("ERROR(TRANSACTION-FULL-FILL-ORDER)", error)
+  }
+  
+}
+
+async function secondTransaction() {
+  let order;
+  try {
+    order = await seaport.api.getOrders({   // Extracting order to fulfill
+      asset_contract_address: asset_contract_addresses[1],
+      token_ids: token_ids[1],
+      side: OrderSide.Sell,
+    });
+
+  }catch (error) {
+    console.log("ERROR(API-GET-ORDERS):", error)
+  }
+
+  try {
+    const transactionHash = await seaport.fulfillOrder({ //Fulfilling order
+          order,
+          accountAddress,
+    });
+
+    console.log(transactionHash);
+  }catch (error) {
+    console.log("ERROR(TRANSACTION-FULL-FILL-ORDER)", error)
+  }
+  
+}
 
 async function main() {
   console.log("Launched");
 
-  extragas = (await seaport._computeGasPrice()).toString();
-
-  //set the gas fee as two time
-  seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
-
-  for(let i=0 ; i<asset_contract_addresses.length ; i ++){
-    let order;
-    try {
-      order = await seaport.api.getOrders({   // Extracting order to fulfill
-        asset_contract_address: asset_contract_addresses[i],
-        token_ids: token_ids[i],
-        side: OrderSide.Sell,
-      });
+  await firstTransaction();
+  await secondTransaction();
   
-    }catch (error) {
-      console.log("ERROR(API-GET-ORDERS):", error)
-    }
-  
-    try {
-      const transactionHash = await seaport.fulfillOrder({ //Fulfilling order
-            order,
-            accountAddress,
-      });
-      console.log(transactionHash);
-    }catch (error) {
-      console.log("ERROR(TRANSACTION-FULL-FILL-ORDER)", error)
-    }
-  }
-  
-	
   return;
-
 };
 
 setTimeout(main, 0)
