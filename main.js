@@ -1,5 +1,4 @@
 // Setting up the environment
-const helpers = require("./helpers.js");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const BigNumber = require('bignumber.js');
 const opensea = require("opensea-js");
@@ -13,7 +12,6 @@ var extragas = 0
 const accountAddress = process.env.ACCOUNT_ADDRESS
 const asset_contract_addresses = process.env.COLLECTION_ADDRS
 const token_ids = process.env.TOKEN_IDS;
-const MNEMONIC = process.env.MNEMONIC
 const privateKeys = process.env.PRIVATE_KEYS
 const NODE_API_KEY = process.env.NODE_API_KEY
 const NETWORK = process.env.NETWORK
