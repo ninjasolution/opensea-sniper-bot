@@ -11,7 +11,8 @@ require('dotenv').config();
 
 var extragas = 0
 const accountAddress = process.env.ACCOUNT_ADDRESS
-const opensea_link = process.env.OPENSEA_LINK
+const asset_contract_address = process.env.COLLECTION_ADDR
+const token_ids = process.env.TOKEN_IDS;
 const MNEMONIC = process.env.MNEMONIC
 const privateKeys = process.env.PRIVATE_KEYS
 const NODE_API_KEY = process.env.NODE_API_KEY
@@ -19,7 +20,7 @@ const NETWORK = process.env.NETWORK
 const API_KEY = process.env.API_KEY
 
 
-if (!MNEMONIC || !NODE_API_KEY || !NETWORK || !opensea_link || !accountAddress) {
+if (!NODE_API_KEY || !NETWORK || !asset_contract_address || !accountAddress) {
 
   console.error(
     "Missing arguments"
@@ -49,29 +50,24 @@ const seaport = new OpenSeaPort(
 
 
 
-const [ asset_contract_address, token_id ] = helpers.parse_url(opensea_link) // extract asset contract address and token id from the opensea likn
-
-console.log(asset_contract_address, token_id)
-
 async function main() {
   console.log("Launched");
 
   extragas = (await seaport._computeGasPrice()).toString();
-  console.log(extragas);
 
   //set the gas fee as two time
   seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
 
   let order;
   try {
-    order = await seaport.api.getOrder({   // Extracting order to fulfill
+    order = await seaport.api.getOrders({   // Extracting order to fulfill
         asset_contract_address,
-        token_id,
+        token_ids,
         side: OrderSide.Sell,
     });
-    console.log(order.basePrice)
+
   }catch (error) {
-    console.log(error, "------------------------------")
+    console.log("ERROR(API-GET-ORDERS):", error)
   }
 
   try {
@@ -81,7 +77,7 @@ async function main() {
     });
     console.log(transactionHash);
   }catch (error) {
-    console.log(error)
+    console.log("ERROR(TRANSACTION-FULL-FILL-ORDER)", error)
   }
 	
   return;
