@@ -44,7 +44,7 @@ const seaport = new OpenSeaPort(
   );
 (async() => {
   extragas = (await seaport._computeGasPrice()).toString();
-})()
+})();
 
 //set the gas fee as two times
 seaport.gasPriceAddition = new BigNumber(extragas);  // add extra gas to current gas price
@@ -77,7 +77,6 @@ async function main() {
   }catch (error) {
     console.log("ERROR(TRANSACTION-FULL-FILL-ORDER)", error)
   }
-  
   
   return;
 };
