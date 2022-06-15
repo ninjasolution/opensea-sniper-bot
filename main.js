@@ -26,7 +26,6 @@ if (!NODE_API_KEY || !NETWORK || !asset_contract_addresses || !accountAddress) {
 
 }
 
-
 const network = NETWORK === "mainnet" /* || NETWORK === "live" */ ? "mainnet" : "rinkeby";
 console.log(network)
 const providerEngine = new HDWalletProvider(privateKeys, "https://" + network + ".infura.io/v3/" + NODE_API_KEY);
